@@ -1,0 +1,67 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SHOW DATABASES
+--------------
+
+Database
+information_schema
+250803335assign2db
+mysql
+performance_schema
+--------------
+DROP DATABASE IF EXISTS 250803335assign2db
+--------------
+
+--------------
+CREATE DATABASE 250803335assign2db
+--------------
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+--------------
+GRANT ALL PRIVILEGES ON 250803335assign2db.* TO 'ta'@'localhost'
+--------------
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+--------------
+SHOW TABLES
+--------------
+
+--------------
+CREATE TABLE Agents(AID CHAR(2), FName CHAR(30), LName CHAR(30), City CHAR(15), Commission FLOAT, PRIMARY KEY (AID))
+--------------
+
+--------------
+CREATE TABLE Customers(CID CHAR(2), FName CHAR(30), LName CHAR(30), AID CHAR(2), City CHAR(15), PhoneNum INT, PRIMARY KEY (CID), FOREIGN KEY (AID) REFERENCES Agents(AID))
+--------------
+
+--------------
+CREATE TABLE Products(PID CHAR(2), Description CHAR(20), Cost FLOAT, Quantity INT, PRIMARY KEY (PID))
+--------------
+
+--------------
+CREATE TABLE Purchase(Quantity INT, CID CHAR(2), PID CHAR(2), FOREIGN KEY (CID) REFERENCES Customers(CID), FOREIGN KEY (PID) REFERENCES Products(PID), PRIMARY KEY (CID, PID))
+--------------
+
+--------------
+SHOW TABLES
+--------------
+
+Tables_in_250803335assign2db
+Agents
+Customers
+Products
+Purchase

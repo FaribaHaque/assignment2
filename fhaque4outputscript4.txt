@@ -1,0 +1,124 @@
+Warning: Using a password on the command line interface can be insecure.
+ERROR 1451 (23000) at line 13: Cannot delete or update a parent row: a foreign key constraint fails (`250803335assign2db`.`Customers`, CONSTRAINT `Customers_ibfk_1` FOREIGN KEY (`AID`) REFERENCES `Agents` (`AID`))
+--------------
+SELECT * FROM Products
+--------------
+
+PID	Description	Cost	Quantity
+11	Bike	150	200
+12	Socks	2	100
+66	Elbow pads	14.25	120
+78	Knee Pads	12.15	70
+80	Toy	16	50
+88	Roller Blades	75	89
+99	Helmet	29	30
+--------------
+SELECT * FROM Agents
+--------------
+
+AID	FName	LName	City	Commission
+11	Regis	Philbin	Boston	33
+12	Rosie	Cox	Ottawa	50
+22	Courtney	Cox	New York	25
+33	David	Letterman	Bedrock	100
+66	Rosie	ODonnell	Ottawa	100
+69	Fariba	Haque	Toronto	16
+99	Hugh	Grant	Springfield	16
+--------------
+SELECT * FROM Customers
+--------------
+
+CID	FName	LName	AID	City	PhoneNum
+10	Barney	Rubble	11	Bedrock	7771234
+12	Monty	Burns	99	Springfield	7890000
+13	Wonder	Woman	33	Kypto	8881234
+14	Peter	Griffens	99	Providence	9874567
+15	Fred	Flintstone	11	Bedrock	7772345
+21	Homer	Simpson	99	Springfield	6868956
+31	Sideshow	Bob	66	Springfield	6865555
+--------------
+SELECT * FROM Purchase
+--------------
+
+Quantity	CID	PID
+19	14	66
+2	15	66
+2	15	78
+14	21	12
+10	21	66
+20	21	99
+5	31	12
+5	31	66
+5	31	78
+5	31	99
+--------------
+CREATE VIEW CustomerPurchases AS SELECT c.FName, c.LName, pr.Description, p.Quantity, pr.Cost, pr.Cost*p.Quantity AS TotalCost FROM Customers AS c INNER JOIN Purchase AS p ON c.CID=p.CID INNER JOIN Products AS pr ON p.PID=pr.PID ORDER BY c.LName
+--------------
+
+--------------
+SELECT * FROM CustomerPurchases
+--------------
+
+FName	LName	Description	Quantity	Cost	TotalCost
+Sideshow	Bob	Socks	5	2	10
+Sideshow	Bob	Elbow pads	5	14.25	71.25
+Sideshow	Bob	Knee Pads	5	12.15	60.74999809265137
+Sideshow	Bob	Helmet	5	29	145
+Fred	Flintstone	Elbow pads	2	14.25	28.5
+Fred	Flintstone	Knee Pads	2	12.15	24.299999237060547
+Peter	Griffens	Elbow pads	19	14.25	270.75
+Homer	Simpson	Socks	14	2	28
+Homer	Simpson	Elbow pads	10	14.25	142.5
+Homer	Simpson	Helmet	20	29	580
+--------------
+SELECT * FROM CustomerPurchases WHERE TotalCost > 100
+--------------
+
+FName	LName	Description	Quantity	Cost	TotalCost
+Sideshow	Bob	Helmet	5	29	145
+Peter	Griffens	Elbow pads	19	14.25	270.75
+Homer	Simpson	Elbow pads	10	14.25	142.5
+Homer	Simpson	Helmet	20	29	580
+--------------
+SELECT * FROM Products
+--------------
+
+PID	Description	Cost	Quantity
+11	Bike	150	200
+12	Socks	2	100
+66	Elbow pads	14.25	120
+78	Knee Pads	12.15	70
+80	Toy	16	50
+88	Roller Blades	75	89
+99	Helmet	29	30
+--------------
+DELETE FROM Products WHERE Description = 'Toy'
+--------------
+
+--------------
+SELECT * FROM Products
+--------------
+
+PID	Description	Cost	Quantity
+11	Bike	150	200
+12	Socks	2	100
+66	Elbow pads	14.25	120
+78	Knee Pads	12.15	70
+88	Roller Blades	75	89
+99	Helmet	29	30
+--------------
+SELECT * FROM Agents
+--------------
+
+AID	FName	LName	City	Commission
+11	Regis	Philbin	Boston	33
+12	Rosie	Cox	Ottawa	50
+22	Courtney	Cox	New York	25
+33	David	Letterman	Bedrock	100
+66	Rosie	ODonnell	Ottawa	100
+69	Fariba	Haque	Toronto	16
+99	Hugh	Grant	Springfield	16
+--------------
+DELETE FROM Agents WHERE City = 'Springfield'
+--------------
+

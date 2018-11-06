@@ -1,0 +1,130 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SELECT Description FROM Products
+--------------
+
+Description
+Bike
+Socks
+Elbow pads
+Knee Pads
+Toy
+Roller Blades
+Helmet
+--------------
+SELECT DISTINCT City FROM Customers
+--------------
+
+City
+Bedrock
+Springfield
+Kypto
+Providence
+--------------
+SELECT * FROM Agents ORDER BY City
+--------------
+
+AID	FName	LName	City	Commission
+33	David	Letterman	Bedrock	100
+11	Regis	Philbin	Boston	33
+22	Courtney	Cox	New York	25
+12	Rosie	Cox	Ottawa	50
+66	Rosie	ODonnell	Ottawa	100
+99	Hugh	Grant	Springfield	16
+69	Fariba	Haque	Toronto	16
+--------------
+SELECT FName, LName FROM Customers WHERE City='Springfield'
+--------------
+
+FName	LName
+Monty	Burns
+Homer	Simpson
+Sideshow	Bob
+--------------
+SELECT Customers.LName FROM Customers, Agents WHERE Customers.AID=Agents.AID AND Agents.FName='Regis'
+--------------
+
+LName
+Rubble
+Flintstone
+--------------
+SELECT Description FROM Products WHERE Description LIKE "%pad%" OR "%Pad%"
+--------------
+
+Description
+Elbow pads
+Knee Pads
+--------------
+SELECT LName, Description, Purchase.Quantity FROM Customers, Products, Purchase WHERE Purchase.CID=Customers.CID AND Purchase.PID=Products.PID
+--------------
+
+LName	Description	Quantity
+Griffens	Elbow pads	19
+Flintstone	Elbow pads	2
+Flintstone	Knee Pads	2
+Simpson	Socks	14
+Simpson	Elbow pads	10
+Simpson	Helmet	20
+Bob	Socks	5
+Bob	Elbow pads	5
+Bob	Knee Pads	5
+Bob	Helmet	5
+--------------
+SELECT SUM(Quantity) AS "Homer's Total Purchases" FROM Purchase, Customers WHERE FName='Homer' AND Customers.CID=Purchase.CID
+--------------
+
+Homer's Total Purchases
+44
+--------------
+SELECT FName, LName, SUM(Quantity) FROM Customers, Purchase WHERE Customers.CID=Purchase.CID GROUP BY LName
+--------------
+
+FName	LName	SUM(Quantity)
+Sideshow	Bob	20
+Fred	Flintstone	4
+Peter	Griffens	19
+Homer	Simpson	44
+--------------
+SELECT Description, Quantity FROM Products WHERE PID NOT IN (SELECT PID FROM Purchase)
+--------------
+
+Description	Quantity
+Bike	200
+Toy	50
+Roller Blades	89
+--------------
+SELECT Description, Quantity FROM Products WHERE PID NOT IN (SELECT PID FROM Purchase, Customers WHERE Purchase.CID=Customers.CID AND FName="Fred" AND LName="Flintstone")
+--------------
+
+Description	Quantity
+Bike	200
+Socks	100
+Toy	50
+Roller Blades	89
+Helmet	30
+--------------
+SELECT Agents.FName AS "Agent FName", Agents.LName AS "Agent LName", Customers.FName AS "Customer FName", Customers.LName AS "Customer LName" FROM Agents, Customers WHERE Agents.AID=Customers.AID AND Agents.City=Customers.City
+--------------
+
+Agent FName	Agent LName	Customer FName	Customer LName
+Hugh	Grant	Monty	Burns
+Hugh	Grant	Homer	Simpson
+--------------
+SELECT SUM(Purchase.Quantity) AS "Total Number of Knee Pads Purchased" FROM Purchase, Products WHERE Purchase.PID=Products.PID AND Description="Knee Pads"
+--------------
+
+Total Number of Knee Pads Purchased
+7
+--------------
+SELECT Description FROM Products WHERE PID IN(SELECT PID FROM (SELECT PID, COUNT(*) AS c FROM Purchase GROUP BY PID HAVING c >= 3) AS x)
+--------------
+
+Description
+Elbow pads
+--------------
+SELECT Agents.FName, Agents.LName FROM Agents, Customers, Purchase, Products WHERE Agents.AID=Customers.AID AND Purchase.CID=Customers.CID AND Purchase.PID=Products.PID AND Products.Description="Knee Pads"
+--------------
+
+FName	LName
+Regis	Philbin
+Rosie	ODonnell
